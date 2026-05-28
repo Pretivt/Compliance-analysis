@@ -23,6 +23,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import api from "../api/api.js";
 
 const Reports = () => {
   const [reports, setReports] = useState([]);
@@ -35,7 +36,8 @@ const Reports = () => {
 
   const fetchReports = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/compliance/get-reports", { withCredentials: true });
+      const response = await api.get("/compliance/get-reports");
+     // const response = await axios.get("http://localhost:5000/api/compliance/get-reports", { withCredentials: true });
       setReports(response.data?.data || []);
     } catch (error) {
       console.error(error);

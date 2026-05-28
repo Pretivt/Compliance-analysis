@@ -230,6 +230,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 
 import { motion } from "framer-motion";
+import api from "../api/api.js";
 
 
 import { useAppTheme } from "../context/ThemeContext.jsx";
@@ -286,7 +287,25 @@ const ComplianceEngine = () => {
   }, []);
 
   const fetchData = async () => {
-    try {
+    // try {
+    //   const [productRes, frameworkRes] =
+    //     await Promise.all([
+    //       axios.get(
+    //         "http://localhost:5000/api/product/get-products",
+    //         {
+    //           withCredentials: true,
+    //         }
+    //       ),
+
+    //       axios.get(
+    //         "http://localhost:5000/api/framework/get-frameworks",
+    //         {
+    //           withCredentials: true,
+    //         }
+    //       ),
+    //     ]);
+
+      try {
       const [productRes, frameworkRes] =
         await Promise.all([
           axios.get(
@@ -303,7 +322,6 @@ const ComplianceEngine = () => {
             }
           ),
         ]);
-
       setProducts(productRes.data?.data || []);
 
       setFrameworks(frameworkRes.data?.data || []);
