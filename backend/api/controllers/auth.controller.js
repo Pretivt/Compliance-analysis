@@ -63,7 +63,7 @@ export const signin = async (req, res, next) => {
       .cookie("token", token, {
         httpOnly: true, //  true taaki frontend token acess na kr payy
         sameSite: 'none', // cross site request block 
-        secure: false,
+        secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       })
       .status(200)
