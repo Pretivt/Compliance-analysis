@@ -2,7 +2,9 @@ import axios from 'axios';
 
 // Create an axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api', // Adjusted to match typical API structure
+baseURL: import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:5000/api',
+
+  // baseURL: 'http://localhost:5000/api', // Adjusted to match typical API structure
   withCredentials: true, // Required for cookies  //token hai tabhi req jayegi
 });
 // Request interceptor
