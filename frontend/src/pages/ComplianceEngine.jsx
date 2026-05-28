@@ -304,24 +304,12 @@ const ComplianceEngine = () => {
     //         }
     //       ),
     //     ]);
-
-      try {
-      const [productRes, frameworkRes] =
-        await Promise.all([
-          axios.get(
-            "http://localhost:5000/api/product/get-products",
-            {
-              withCredentials: true,
-            }
-          ),
-
-          axios.get(
-            "http://localhost:5000/api/framework/get-frameworks",
-            {
-              withCredentials: true,
-            }
-          ),
-        ]);
+try {
+  
+  const [productRes, frameworkRes] = await Promise.all([
+    api.get("/product/get-products"),
+    api.get("/framework/get-frameworks")
+  ]);
       setProducts(productRes.data?.data || []);
 
       setFrameworks(frameworkRes.data?.data || []);
