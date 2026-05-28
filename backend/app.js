@@ -62,7 +62,8 @@ const app = express();
 //  cors:
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: ["http://localhost:5173",  "http://localhost:5174", "https://compliance-analysis-pi.vercel.app"],
+    // origin: ["http://localhost:5173", "http://localhost:5174"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   }),
