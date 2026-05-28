@@ -5,7 +5,10 @@ import "./config/qdrant.js";
 const port = process.env.PORT|| 3000 ;
 
 // db 
-db()
+// db()
+db().catch((err) => {
+  console.error("DB connection failed:", err);
+});
 
 //  localhost:
 app.listen(port, () => {
