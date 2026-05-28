@@ -336,8 +336,8 @@ try {
     setReport("");
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/compliance/analyze",
+      const response = await api.post(
+        "/compliance/analyze",
         {
           productId: selectedProduct,
           frameworkId: selectedFramework,
