@@ -1,0 +1,256 @@
+/* Dashboard.module.css */
+
+.dashboardWrapper {
+  min-height: 100vh;
+  padding: 32px;
+  border-radius: 24px;
+  animation: fadeIn 0.6s ease;
+}
+
+/* Header */
+.dashboardHeader {
+  margin-bottom: 36px;
+}
+
+.dashboardTitle {
+  font-size: 2.4rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dashboardSubtitle {
+  font-size: 1rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* Cards */
+.statsCard {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px !important;
+  padding: 34px !important;
+  transition: all 0.35s ease !important;
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+}
+
+.statsCard:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 45px rgba(37, 99, 235, 0.18);
+}
+
+.statsCard::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 180px;
+  height: 180px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+}
+
+/* Theme Modes */
+
+.dark {
+  background: #020617;
+  color: #f8fafc;
+  min-height: 100vh;
+}
+
+.light {
+  background: #f8fafc;
+  color: #0f172a;
+  min-height: 100vh;
+}
+
+/* Dark Mode Card */
+
+.dark .secondaryCard {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #f8fafc;
+}
+
+.dark .cardLabel {
+  color: #cbd5e1;
+}
+
+.dark .cardSubText {
+  color: #94a3b8;
+}
+
+/* Light Mode Card */
+
+.light .secondaryCard {
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(15,23,42,0.08);
+  color: #0f172a;
+}
+
+.light .cardLabel {
+  color: #334155;
+}
+
+.light .cardSubText {
+  color: #64748b;
+}
+
+/* Header */
+
+.dark .dashboardSubtitle {
+  color: #94a3b8;
+}
+
+.light .dashboardSubtitle {
+  color: #64748b;
+}
+
+/* Smooth Transition */
+
+.dashboardWrapper,
+.statsCard,
+.secondaryCard,
+.primaryCard,
+.dashboardTitle,
+.dashboardSubtitle {
+  transition: all 0.35s ease;
+}
+
+
+
+/* Primary Gradient Card */
+.primaryCard {
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  color: white !important;
+}
+
+/* Secondary Cards */
+.secondaryCard {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(148,163,184,0.12);
+}
+
+/* Dark Theme Support */
+.dark .secondaryCard {
+  background: rgba(15, 23, 42, 0.7);
+}
+
+.light .secondaryCard {
+  background: rgba(255,255,255,0.9);
+}
+
+/* Icon Styling */
+.cardIcon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+}
+
+.secondaryCard .cardIcon {
+  background: linear-gradient(
+    135deg,
+    rgba(37, 99, 235, 0.15),
+    rgba(124, 58, 237, 0.15)
+  );
+}
+
+/* Text */
+.cardLabel {
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.9;
+  margin-bottom: 12px;
+}
+
+.cardValue {
+  font-size: 3rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -2px;
+}
+
+.cardSubText {
+  margin-top: 14px;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+/* Progress Ring Glow */
+.glowEffect {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.18), transparent 60%);
+  pointer-events: none;
+}
+
+/* Loading */
+.loaderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+}
+
+/* Floating animation */
+.floatCard {
+  animation: floating 4s ease-in-out infinite;
+}
+
+.floatCard:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.floatCard:nth-child(3) {
+  animation-delay: 2s;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .dashboardWrapper {
+    padding: 18px;
+  }
+
+  .dashboardTitle {
+    font-size: 2rem;
+  }
+
+  .cardValue {
+    font-size: 2.3rem !important;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
