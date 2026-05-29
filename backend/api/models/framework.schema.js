@@ -69,9 +69,9 @@ const frameworkSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // ❌ tumne timeStamps likha tha (गलत)
+    timestamps: true, 
   }
 );
 
-// ✅ FIX
+
 export const Framework = mongoose.model("Framework", frameworkSchema);

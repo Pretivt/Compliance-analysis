@@ -1,3 +1,6 @@
+
+
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
@@ -12,10 +15,18 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import { ThemeContextProvider } from "./context/ThemeContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Logout from "./pages/auth/Logout.jsx";
+
+// admin logs 
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import FrameworkPage from "./pages/admin/ViewFrameworks.jsx";
+import CreateFramework from "./pages/admin/CreateFramework";
+import AdminProtectedRoute from "./components/AdminProtectedRoute.jsx"; 
 import { ToastContainer } from "react-toastify";
 
 function App() {
   const router = createBrowserRouter([
+    // =USER ROUTES 
     {
       path: "/",
       element: <Layout />,
@@ -27,53 +38,43 @@ function App() {
         {
           element: <ProtectedRoute />,
           children: [
-            {
-              path: "/organization",
-              element: <Oraganizations />,
-            },
-            {
-              path: "/products",
-              element: <Product />,
-            },
-            {
-              path: "/rules-and-policies",
-              element: <RuleAndPolicies />,
-            },
-            {
-              path: "/compliance-engine",
-              element: <ComplianceEngine />,
-            },
-            {
-              path: "/reports",
-              element: <Reports />,
-            },
+            { path: "/organization", element: <Oraganizations /> },
+            { path: "/products", element: <Product /> },
+            { path: "/rules-and-policies", element: <RuleAndPolicies /> },
+            { path: "/compliance-engine", element: <ComplianceEngine /> },
+            { path: "/reports", element: <Reports /> },
           ],
         },
+        { path: "/signup", element: <Signup /> },
+        { path: "/signin", element: <Signin /> },
+        { path: "/logout", element: <Logout /> },
+      ],
+    },
+
+    //  ADMIN ROUTES 
+    {
+      path: "/admin",
+      element: <AdminProtectedRoute />, // 👈 Ab admin user layout se aazaad hai
+      children: [
         {
-          path: "/signup",
-          element: <Signup />,
-        },
-        {
-          path: "/signin",
-          element: <Signin />,
-        },
-        {
-          path: "/logout",
-          element: <Logout />,
+          element: <AdminLayout />, // 👈 Ab sirf admin ka apna dark layout chalega
+          children: [
+            { index: true, element: <AdminDashboard /> },
+            { path: "frameworks", element: <FrameworkPage /> },
+            { path: "framework/create", element: <CreateFramework /> },
+          ],
         },
       ],
     },
   ]);
 
   return (
-    <>
-      <AuthProvider>
-        <ThemeContextProvider>
-          <RouterProvider router={router} />
-          <ToastContainer position="top-center" autoClose={3000} />
-        </ThemeContextProvider>
-      </AuthProvider>
-    </>
+    <AuthProvider>
+      <ThemeContextProvider>
+        <RouterProvider router={router} />
+        <ToastContainer position="top-center" autoClose={3000} />
+      </ThemeContextProvider>
+    </AuthProvider>
   );
 }
 

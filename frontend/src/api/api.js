@@ -28,10 +28,10 @@ api.interceptors.response.use(
       // that falls out of the range of 2xx
       console.error('API Error:', error.response.data.message || error.message);
     } else if (error.request) {
-      // The request was made but no response was received
+      
       console.error('Network Error: No response received');
     } else {
-      // Something happened in setting up the request that triggered an Error
+      
       console.error('Error:', error.message);
     }
     return Promise.reject(error);

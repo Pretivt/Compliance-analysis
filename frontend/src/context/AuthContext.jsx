@@ -1,48 +1,66 @@
+
+
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../api/api";
-import { toast } from "react-toastify";
-//  create context:
+
+// 1. Create Context
 const AuthContext = createContext();
-//  create function that provide the context to whole application
+
+// 2. AuthProvider Component जो पूरी Application को Wrap करेगा
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Check Auth: Page refresh hone par check karega ki user already logged in hai ya nahi
   const checkAuth = async () => {
     try {
       const response = await api.get("/auth/get-users");
-      setUser(response.data);
+      // Backend direct user object (select("-password")) bhej raha hai
+      setUser(response.data); 
     } catch (err) {
-      console.log(err);
+      console.log("Auth verification failed:", err);
       setUser(null);
     } finally {
       setLoading(false);
     }
   };
+
+  // Login Function: Signin form se credentials lekar API hit karega
   const login = async (credentials) => {
     const response = await api.post("/auth/signin", credentials);
-    setUser(response.data.data);
+    // Backend login response data format: data: { _id, name, role }
+    setUser(response.data.data); 
     return response;
   };
 
+  // Logout Function: Cookies clear karne ke liye
   const logout = async () => {
-    await api.post("/auth/signout");
-    setUser(null);
+    try {
+      await api.post("/auth/signout");
+    } catch (err) {
+      console.log("Logout error:", err);
+    } finally {
+      setUser(null);
+    }
   };
 
+  // Hook to call checkAuth on initial render
   useEffect(() => {
     checkAuth();
   }, []);
+
   return (
     <AuthContext.Provider value={{ user, login, loading, logout, checkAuth }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+// 3. Custom Hook: Components mein Auth use karne ke liye
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("context must be initiallized");
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

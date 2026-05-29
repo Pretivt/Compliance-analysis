@@ -32,12 +32,12 @@ const initFrameworkCollection = async () => {
                 field_name: "frameworkId",
                 field_schema: "keyword",
             });
-            console.log(`✅ Qdrant Collection '${collectionName}' created successfully.`);
+            console.log(` Qdrant Collection '${collectionName}' created successfully.`);
         } else {
-            console.log(`ℹ️ Qdrant Collection '${collectionName}' already exists.`);
+            console.log(`ℹ Qdrant Collection '${collectionName}' already exists.`);
         }
     } catch (err) {
-        console.error(`❌ Error setting up Qdrant Collection '${collectionName}':`, err);
+        console.error(` Error setting up Qdrant Collection '${collectionName}':`, err);
     }
 };
 
@@ -60,9 +60,9 @@ try {
             field_schema: "keyword",
         });
 
-        console.log("✅ frameworkId index created");
+        console.log(" frameworkId index created");
     } catch (err) {
-        console.log("❌ index creation failed", err);
+        console.log(" index creation failed", err);
     }
 
 } catch (err) {

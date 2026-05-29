@@ -1,7 +1,7 @@
 
 
 
-//updated code
+
 import { Framework } from "../models/framework.schema.js";
 import { chunkFramework } from "../../utils/chunking.js";
 import { generateEmbedding } from "../../utils/embeddings.js";
@@ -77,7 +77,7 @@ export const createFrameWork = async (req, res, next) => {
         });
       }
     } catch (vectorErr) {
-      console.error("❌ Failed to save to Vector DB during creation:", vectorErr);
+      console.error(" Failed to save to Vector DB during creation:", vectorErr);
       // Not returning error to user as Mongo save was successful, but logging it.
     }
     // --------------------------------------------------------

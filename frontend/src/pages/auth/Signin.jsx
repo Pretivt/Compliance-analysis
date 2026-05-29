@@ -1,15 +1,6 @@
-
-
-
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Mail,
-  Lock,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
+import { Mail, Lock, ShieldCheck, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
@@ -55,24 +46,24 @@ const Signin = () => {
 
       if (response.status === 200) {
         toast.success("Signin successful!");
-        navigate("/");
+        const userRole =response?.data?.data?.role;
+        
+        console.log("Logged in user role is:", userRole);
+        if (userRole === "admin") {
+          navigate("/admin"); // Admin seedhe admin layout par jayega
+        } else {
+          navigate("/"); // Normal user main application dashboard par jayega
+        }
       }
     } catch (err) {
-      setError(
-        err.response?.data?.message ||
-          "Invalid email or password"
-      );
+      setError(err.response?.data?.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div
-      className={`auth-container ${
-        isDark ? "auth-dark" : "auth-light"
-      }`}
-    >
+    <div className={`auth-container ${isDark ? "auth-dark" : "auth-light"}`}>
       {/* BACKGROUND GLOW */}
       <div className="auth-glow auth-glow-1"></div>
       <div className="auth-glow auth-glow-2"></div>
@@ -93,21 +84,14 @@ const Signin = () => {
               repeat: Infinity,
             }}
           >
-            <ShieldCheck
-              size={42}
-              color="#ffffff"
-            />
+            <ShieldCheck size={42} color="#ffffff" />
           </motion.div>
 
-          <h1 className="auth-title">
-            Welcome Back
-          </h1>
+          <h1 className="auth-title">Welcome Back</h1>
 
           <p className="auth-description">
-            Sign in to access your AI-powered
-            compliance dashboard with smart
-            regulatory analysis, semantic search,
-            and intelligent reporting.
+            Sign in to access your AI-powered compliance dashboard with smart
+            regulatory analysis, semantic search, and intelligent reporting.
           </p>
 
           <div className="auth-features">
@@ -141,32 +125,19 @@ const Signin = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <h2 className="form-title">
-              Sign In ✨
-            </h2>
+            <h2 className="form-title" style={{ color: '#ffffff' }}>Sign In ✨</h2>
 
-            <p className="form-subtitle">
-              Access your compliance workspace
-            </p>
+            <p className="form-subtitle">Access your compliance workspace</p>
 
-            {error && (
-              <div className="auth-error">
-                {error}
-              </div>
-            )}
+            {error && <div className="auth-error">{error}</div>}
 
             <form onSubmit={handleSubmit}>
               {/* EMAIL */}
               <div className="input-group">
-                <label className="input-label">
-                  Email Address
-                </label>
+                <label className="input-label">Email Address</label>
 
                 <div className="input-wrapper">
-                  <Mail
-                    size={18}
-                    className="input-icon"
-                  />
+                  <Mail size={18} className="input-icon" />
 
                   <input
                     type="email"
@@ -182,15 +153,10 @@ const Signin = () => {
 
               {/* PASSWORD */}
               <div className="input-group">
-                <label className="input-label">
-                  Password
-                </label>
+                <label className="input-label">Password</label>
 
                 <div className="input-wrapper">
-                  <Lock
-                    size={18}
-                    className="input-icon"
-                  />
+                  <Lock size={18} className="input-icon" />
 
                   <input
                     type="password"
@@ -222,18 +188,13 @@ const Signin = () => {
                 disabled={loading}
                 className="auth-button"
               >
-                {loading
-                  ? "Signing In..."
-                  : "Sign In"}
+                {loading ? "Signing In..." : "Sign In"}
               </motion.button>
             </form>
 
             <div className="auth-footer">
               Don’t have an account?{" "}
-              <Link
-                to="/signup"
-                className="auth-link"
-              >
+              <Link to="/signup" className="auth-link">
                 Create Account
               </Link>
             </div>

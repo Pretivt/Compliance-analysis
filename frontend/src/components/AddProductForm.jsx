@@ -32,7 +32,7 @@ const AddProductForm = ({ onSuccess }) => {
 
   const [selectedImages, setSelectedImages] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => {1
     const fetchOrgs = async () => {
       setFetchingOrgs(true);
       try {
@@ -117,7 +117,7 @@ const AddProductForm = ({ onSuccess }) => {
     console.log("selectedImages", selectedImages);
 
     try {
-      console.log("🔥 SENDING REQUEST");
+      console.log(" SENDING REQUEST");
       //await api.post('/product/create', data);
       await api.post('/product/create', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
@@ -125,7 +125,7 @@ const AddProductForm = ({ onSuccess }) => {
       toast.success('Product registered successfully!');
       if (onSuccess) onSuccess();
     } catch (error) {
-       console.log("🔥 FRONTEND ERROR:", error.response?.data);
+       console.log(" FRONTEND ERROR:", error.response?.data);
       toast.error(error.response?.data?.message || 'Failed to create product');
     } finally {
       setLoading(false);

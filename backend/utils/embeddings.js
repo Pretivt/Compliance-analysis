@@ -22,7 +22,7 @@ export const generateEmbedding = async (text) => {
       inputs: text,
       
     });
-    console.log("✅ Embedding generated");
+    console.log(" Embedding generated");
     console.log("Vector length:", response.length);
     console.log(response.slice(0, 5));
 
@@ -30,7 +30,7 @@ export const generateEmbedding = async (text) => {
 
     return response;
   } catch (error) {
-    console.error("❌ Error generating embedding:", error);
+    console.error(" Error generating embedding:", error);
     throw error;
   }
 };
