@@ -1,9 +1,12 @@
-import React from "react";
+
+
+
+import React, { useState } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, Divider, Button, IconButton } from "@mui/material";
-import { LayoutDashboard, FileSpreadsheet, PlusCircle, LogOut, ShieldCheck, Sun, Moon } from "lucide-react";
+import { LayoutDashboard, FileSpreadsheet, PlusCircle, LogOut, ShieldCheck, Sun, Moon, Menu } from "lucide-react"; // 👈 Menu icon added
 import { useAuth } from "../../context/AuthContext";
-import { useAppTheme } from "../../context/ThemeContext.jsx"; // 👈 Is path ko check kar lena
+import { useAppTheme } from "../../context/ThemeContext.jsx"; 
 import "./AdminLayout.css"; 
 
 const drawerWidth = 260;
@@ -12,10 +15,15 @@ const AdminLayout = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // Aapke global context se values nikal rahe hain
   const { mode, toggleTheme } = useAppTheme();
   const isDark = mode === "dark";
+
+  // 🔄 Sidebar Open/Close Toggle State (For both mobile and desktop)
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const handleDrawerToggle = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -31,57 +39,72 @@ const AdminLayout = () => {
   return (
     <Box className={`admin-layout-container ${isDark ? 'admin-dark' : 'admin-light'}`}>
       
-      {/* 🧭 SIDEBAR DRAWER */}
+      {/*  PREMIUM RESPONSIVE DRAWER */}
       <Drawer
         variant="permanent"
         sx={{
-          width: drawerWidth,
+          width: sidebarOpen ? drawerWidth : 70, 
           flexShrink: 0,
+          whiteSpace: "nowrap",
           "& .MuiDrawer-paper": { 
-            width: drawerWidth, 
+            width: sidebarOpen ? drawerWidth : 70, 
             boxSizing: "border-box", 
             bgcolor: isDark ? "#020617" : "#ffffff", 
             color: isDark ? "#cbd5e1" : "#334155", 
             borderRight: `1px solid ${isDark ? '#1e293b' : '#e2e8f0'}`, 
-            position: "relative",
-            transition: "all 0.3s ease"
+            position: "fixed",
+            height: "100vh",
+            overflowX: "hidden", // Prevents horizontal scrolls when collapsed
+            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)", // Smooth sliding effect
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between"
           },
         }}
       >
-        <Box className="sidebar-scroll-area">
-          {/* Header jahan Toggle Button laga hai */}
-          <Box style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px", marginBottom: "24px", marginTop: "16px" }}>
-            <Box style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <ShieldCheck size={32} color="#6366f1" />
-              <Typography variant="h6" style={{ fontWeight: 800, color: isDark ? '#fff' : '#0f172a', letterSpacing: "1px" }}>
-                ADMIN HUB
-              </Typography>
-            </Box>
+        <Box className="sidebar-scroll-area" sx={{ p: sidebarOpen ? 2 : 1 }}>
+      
+          <Box style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px", marginTop: "8px" }}>
             
-            {/* ☀️ TOGGLE ICON SWITCH 🌙 */}
-            <IconButton onClick={toggleTheme} color="inherit" sx={{ color: isDark ? '#fbbf24' : '#6366f1' }}>
-              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            {/* 3 Lines Toggle Icon (Top Left Corner) */}
+            <IconButton onClick={handleDrawerToggle} color="inherit" sx={{ p: 1 }}>
+              <Menu size={22} />
             </IconButton>
+
+            {/* Brand text scales away when sidebar is closed */}
+            {sidebarOpen && (
+              <Typography variant="h6" style={{ fontWeight: 800, color: isDark ? '#fff' : '#0f172a', letterSpacing: "0.5px", fontSize: "16px" }}>
+                Compliance Hub
+              </Typography>
+            )}
           </Box>
+          
           <Divider sx={{ bgcolor: isDark ? "#1e293b" : "#e2e8f0", mb: 2 }} />
 
-          {/* Sidebar Menu Links */}
+          {/* Navigation Links */}
           <List sx={{ p: 0 }}>
             {menuItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
-                <ListItem key={item.text} disablePadding>
+                <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
                   <ListItemButton
                     component={Link}
                     to={item.path}
                     className={`sidebar-link-btn ${isActive ? 'sidebar-link-active' : ''}`}
                     sx={{ 
+                      minHeight: 48,
+                      justifyContent: sidebarOpen ? "initial" : "center",
+                      px: 2.5,
                       color: isActive ? "#fff" : (isDark ? "#94a3b8" : "#475569"), 
                       "&:hover": { bgcolor: isActive ? "" : (isDark ? "#1e293b" : "#f1f5f9"), color: isActive ? "#fff" : (isDark ? "#fff" : "#0f172a") } 
                     }}
                   >
-                    <ListItemIcon sx={{ color: isActive ? "#6366f1" : (isDark ? "#64748b" : "#94a3b8"), minWidth: "40px" }}>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.text} primaryTypographyProps={{ fontSize: "14px", fontWeight: 600 }} />
+                    <ListItemIcon sx={{ color: isActive ? "#6366f1" : (isDark ? "#64748b" : "#94a3b8"), minWidth: 0, mr: sidebarOpen ? 3 : "auto", justifyContent: "center" }}>
+                      {item.icon}
+                    </ListItemIcon>
+                    
+                    {/* Text hides gracefully when sidebar closes */}
+                    <ListItemText primary={item.text} primaryTypographyProps={{ fontSize: "14px", fontWeight: 600 }} sx={{ opacity: sidebarOpen ? 1 : 0, transition: "opacity 0.2s" }} />
                   </ListItemButton>
                 </ListItem>
               );
@@ -89,66 +112,56 @@ const AdminLayout = () => {
           </List>
         </Box>
 
-        {/* 🚪 BOTTOM LOGOUT SECTION */}
-       {/* 🚪 PREMIUM ICONIC LOGOUT SECTION AT BOTTOM */}
-<Box 
-  className="sidebar-bottom-logout" 
-  sx={{ 
-    bgcolor: isDark ? "#020617" : "#ffffff", 
-    borderTop: `1px solid ${isDark ? '#1e293b' : '#e2e8f0'}`,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    px: 2,
-    py: 1.5
-  }}
->
-  {/* Left Side: Mock Admin Avatar (Initials) */}
-  <Box 
-    sx={{ 
-      width: 40, 
-      height: 40, 
-      borderRadius: "50%", 
-      bgcolor: isDark ? "rgba(99, 102, 241, 0.15)" : "rgba(99, 102, 241, 0.1)", 
-      color: "#6366f1", 
-      display: "flex", 
-      alignItems: "center", 
-      justifyContent: "center",
-      fontWeight: 700,
-      fontSize: "14px",
-      letterSpacing: "0.5px",
-      border: "1px solid rgba(99, 102, 241, 0.2)"
-    }}
-  >
-    AD
-  </Box>
+        {/* 🚪 BOTTOM FIXED FOOTER: SUN/MOON + LOGOUT */}
+        <Box 
+          className="sidebar-bottom-logout" 
+          sx={{ 
+            bgcolor: isDark ? "#020617" : "#ffffff", 
+            borderTop: `1px solid ${isDark ? '#1e293b' : '#e2e8f0'}`,
+            display: "flex",
+            flexDirection: sidebarOpen ? "row" : "column", // Stack items on collapse
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: sidebarOpen ? 0 : 2,
+            px: 2,
+            py: 1.5,
+            transition: "all 0.3s"
+          }}
+        >
+          {/* Theme Switch Icon */}
+          <IconButton onClick={toggleTheme} color="inherit" sx={{ color: isDark ? '#fbbf24' : '#6366f1', width: 40, height: 40 }}>
+            {isDark ? <Sun size={20} /> : <Moon size={20} />}
+          </IconButton>
 
-  {/* Right Side: Clean Power/Logout Icon Button */}
-  <IconButton 
-    onClick={handleLogout}
-    sx={{
-      width: 40,
-      height: 40,
-      borderRadius: "12px",
-      color: "#f87171",
-      bgcolor: "rgba(239, 68, 68, 0.05)",
-      border: `1px solid ${isDark ? 'rgba(239, 68, 68, 0.15)' : 'rgba(239, 68, 68, 0.1)'}`,
-      "&:hover": {
-        bgcolor: "#ef4444",
-        color: "#ffffff",
-        boxShadow: "0 4px 12px rgba(239, 68, 68, 0.25)",
-        transform: "scale(1.03)"
-      },
-      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)"
-    }}
-  >
-    <LogOut size={18} />
-  </IconButton>
-</Box>
+          {/* Logout Action */}
+          <IconButton 
+            onClick={handleLogout}
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: "12px",
+              color: "#f87171",
+              bgcolor: "rgba(239, 68, 68, 0.05)",
+              border: `1px solid ${isDark ? 'rgba(239, 68, 68, 0.15)' : 'rgba(239, 68, 68, 0.1)'}`,
+              "&:hover": { bgcolor: "#ef4444", color: "#ffffff" }
+            }}
+          >
+            <LogOut size={18} />
+          </IconButton>
+        </Box>
       </Drawer>
 
-      {/* 💻 MAIN VIEWPORT */}
-      <Box component="main" className="admin-main-viewport">
+      {/* 💻 MAIN CONTENT SCREEN VIEWPORT */}
+      <Box 
+        component="main" 
+        className="admin-main-viewport"
+        sx={{ 
+          flexGrow: 1,
+          width: `calc(100% - ${sidebarOpen ? drawerWidth : 70}px)`,
+          ml: `${sidebarOpen ? drawerWidth : 70}px`, // Adjust margin dynamically
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+      >
         <Box className="admin-content-wrapper">
           <Outlet />
         </Box>

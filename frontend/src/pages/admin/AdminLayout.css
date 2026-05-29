@@ -1,4 +1,4 @@
-/* Layout Main Containers */
+Layout Main Containers
 .admin-layout-container {
   width: 100%;
   height: 100vh;
@@ -105,4 +105,50 @@
   color: #fff !important;
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
   transform: translateY(-1px);
+}
+
+/* ================= 📱 MOBILE & TABLET RESPONSIVENESS FIX ================= */
+
+@media (max-width: 768px) {
+  /* 1. Layout ko row ke bajaye column karo taaki sidebar upar chala jaye aur content niche */
+  .admin-layout-container {
+    flex-direction: column !important;
+    height: auto !important;
+    overflow: y-auto !important;
+  }
+
+  /* 2. Sidebar Drawer ki width mobile par full width ya adjustment mode me lao */
+  .MuiDrawer-root {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Material UI ke paper container ko overflow fix do */
+  .MuiDrawer-paper {
+    width: 100% !important;
+    position: relative !important; /* Fixed se hata kar relative kiya mobile par */
+    height: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--dash-border, #1e293b);
+  }
+
+  /* Sidebar bottom logout ko mobile par relative stack karo */
+  .sidebar-bottom-logout {
+    position: relative !important;
+    margin-top: 10px;
+  }
+
+  /* 3. Main content viewport ko poori width do taaki cards automatic niche line me aa jayein */
+  .admin-main-viewport {
+    width: 100% !important;
+    padding: 16px !important; /* Mobile par padding kam ki */
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Split section (cards aur logs) ko single column me convert karo */
+  .split-section {
+    grid-template-columns: 1fr !important; /* Do columns se ek column ban gaya */
+    gap: 16px !important;
+  }
 }
