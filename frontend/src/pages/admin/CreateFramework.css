@@ -217,3 +217,43 @@
     top: 0;
   }
 }
+
+/* ================= 📱 CREATE MODULE RESPONSIVE REPAIR ================= */
+
+@media (max-width: 1024px) {
+  
+  .create-layout-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+
+  /* 2. Left parameter panel ki script-widths ko override kiya */
+  .left-config-panel {
+    position: relative !important; /* Fixed position ko kill kiya */
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  
+  .right-requirements-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    box-sizing: border-box;
+  }
+
+
+  .input-row-twin {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .inputs-inner-grid {
+    grid-template-columns: 1fr !important; 
+    gap: 16px !important;
+  }
+}
